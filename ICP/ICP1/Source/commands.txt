@@ -1,0 +1,60 @@
+1. Create keyspace
+------------------
+
+create keyspace avni with replication={'class':'SimpleStrategy', 'replication_factor':1};
+
+
+2. Create table
+----------------
+
+USE avni;
+CREATE TABLE employee (
+	empno int,
+	ename text,
+	jobtitle text,
+	hiredate timestamp,
+	deptno int,
+	department text,
+	manager text,
+	salary int,
+	PRIMARY KEY(empno)
+);
+
+
+3. Insert into table
+--------------------
+INSERT INTO employee (empno, ename, jobtitle, hiredate, deptno, department, manager, salary)
+  VALUES (101, 'avni', 'Architect', '2017-05-05', 15, 'Cloud Platforms', 'Joe', 1000000);
+INSERT INTO employee (empno, ename, jobtitle, hiredate, deptno, department, manager, salary)
+  VALUES (102, 'mike', 'Developer', '2017-05-05', 25, 'AWS', 'Smith', 100000);
+INSERT INTO employee (empno, ename, jobtitle, hiredate, deptno, department, manager, salary)
+  VALUES (103, 'david', 'VP', '1980-12-17', 1, 'Executive', 'Don', 5000000);
+INSERT INTO employee (empno, ename, jobtitle, hiredate, deptno, department, manager, salary)
+  VALUES (104, 'john', 'Clerk', '2017-05-05', 35, 'Staff', 'Tony', 10000);
+  
+  
+4. ICP Queries
+---------------
+
+1.	List the empno,ename,jobtitle,and hiredate of employee from the employee table.
+	select empno, ename, jobtitle, hiredate from employee;
+
+2.	List the name,salary of the employees who are clerks.
+	select ename, salary from employee where jobtitle = 'Clerk' ALLOW FILTERING;
+	
+3.	List the name,job,salary of every employee joined on ‘december 17,1980’,
+	select ename, jobtitle, salary from employee where hiredate = '1980-12-17' ALLOW FILTERING;
+	
+4.	List name and annual salary of all the employees.
+	select ename, salary from employee;
+	
+5.	List the department name & deptno for departments having deptno.>=20
+	select deptno, department from employee where deptno >= 20 ALLOW FILTERING;
+	
+6.	Display employees’ names, salary and manager values of those employees whose salary is 500 from EMP table using SELECT statement.
+	select ename, salary, manager from employee where salary = 500 ALLOW FILTERING;
+	
+	select ename, salary, manager from employee where salary = 5000 ALLOW FILTERING;
+	
+7.	Write a query that displays enames with first letter capitalized and all other letters in lowercase and length of enames whose enames start with J, A or N.
+	select ename from employee where ename 
