@@ -1,0 +1,90 @@
+a)Consider one of the use caseand usea simple dataset. Describe the use case considered based on your assumptions, report the dataset, its fields, datatype etc.
+
+Use Case Considered = Coursera
+
+Problem: Need a high performing and highly scalable database where new features can be easily added. 
+Solution: They chose Cassandra. But in this task, we will compare both HBase and Cassandra 
+
+Dataset:
+The table should contain columns like user_id, user_name, course_id, course_name, course_completion_status, course_start_date etc.
+The user_id and course_id columns would be numeric and the user_name, course_name and course_completion_status columns would be text. Column course_start_date is date type.
+
+b)Use HBase to implement a Solution for the use case. Report at least 3 queries, their input and output. The query’s relevance towards solving the use case is important. 
+
+HBase table creation: 
+
+create 'user_courses', 'user_info', 'course_info'
+
+HBase insert rows:
+
+put 'user_courses', '1', 'user_info:user_id', '2341'
+put 'user_courses', '1', 'user_info:user_name', 'Avni Mehta'
+
+put 'user_courses', '1', 'course_info:course_id', '21'
+put 'user_courses', '1', 'course_info:course_name', 'Python'
+put 'user_courses', '1', 'course_info:course_completion_status', 'In Progress'
+put 'user_courses', '1', 'course_info:course_start_date', '04/23/2018'
+
+put 'user_courses', '2', 'user_info:user_id', '2341'
+put 'user_courses', '2', 'user_info:user_name', 'Avni Mehta'
+                     
+put 'user_courses', '2', 'course_info:course_id', '341'
+put 'user_courses', '2', 'course_info:course_name', 'AWS'
+put 'user_courses', '2', 'course_info:course_completion_status', 'Complete'
+put 'user_courses', '2', 'course_info:course_start_date', '06/18/2018'
+
+put 'user_courses', '3', 'user_info:user_id', '10'
+put 'user_courses', '3', 'user_info:user_name', 'Hardik Mehta'
+                     
+put 'user_courses', '3', 'course_info:course_id', '21'
+put 'user_courses', '3', 'course_info:course_name', 'Python'
+put 'user_courses', '3', 'course_info:course_completion_status', 'Complete'
+put 'user_courses', '3', 'course_info:course_start_date', '01/23/2018'
+
+HBase queries: 
+
+# Scan all rows of table
+scan 'user_courses'
+
+# Get all rows in a specific a timerange (eg. courses enrolled today) 
+scan 'user_courses', {TIMERANGE => [1303668804, 1303668904]}
+
+# Get user name and course name
+scan 'user_courses', {COLUMNS => ['user_name', 'course_name']}
+
+
+c)Use Cassandra to implement a Solution for the use case. Report at least 3 queries, their input and output. The query’s relevance towards solving the use case is important.
+
+create keyspace coursera with replication={'class':'SimpleStrategy', 'replication_factor':1};
+
+USE coursera;
+CREATE TABLE user_courses (
+	user_id int,
+	user_name text,
+	course_id int,
+	course_name text,
+	course_completion_status text,
+	course_start_date timestamp,
+	PRIMARY KEY(user_id, course_id)
+);
+
+
+INSERT INTO user_courses (user_id, user_name, course_id, course_name, course_completion_status, course_start_date)
+  VALUES (2341, 'Avni Mehta', 21, 'Python', 'In Progress', '2018-02-05');
+  
+INSERT INTO user_courses (user_id, user_name, course_id, course_name, course_completion_status, course_start_date)
+  VALUES (2341, 'Avni Mehta', 15, 'AWS', 'Complete', '2018-05-05');
+  
+INSERT INTO user_courses (user_id, user_name, course_id, course_name, course_completion_status, course_start_date)
+  VALUES (10, 'Hardik Mehta', 21, 'Python', 'Complete', '2017-05-01');
+  
+
+# Scan all rows of table
+select * from user_courses
+
+# Get all rows in a specific a timerange 
+
+select * from user_courses where course_start_date > '2017-05-01' ALLOW FILTERING;
+
+# Get user name and course name
+select user_name, course_name from user_courses;
