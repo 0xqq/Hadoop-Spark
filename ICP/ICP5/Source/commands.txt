@@ -1,0 +1,101 @@
+Hive commands
+-------------
+
+Usecase - PETROL
+-----------------
+
+1. Create Table
+
+create table petrol (district_id STRING, distributer_name STRING, amt_in STRING, amt_out STRING, vol_in INT, vol_out INT, year INT) 
+row format delimited 
+fields terminated by ',' 
+stored as textfile;
+
+2. Load Data
+
+load data local inpath '/home/cloudera/Downloads/petrol.txt' into table petrol;
+
+3. Queries
+
+a. Get total volume of petrol sold by every distributor
+	SELECT distributer_name, SUM(vol_out) volume
+	FROM  petrol 
+	GROUP BY distributer_name
+	ORDER BY volume DESC;
+	
+b. Top 10 District ID by amount of petrol sold
+	SELECT district_id, vol_out
+	FROM petrol 
+	ORDER BY vol_out DESC
+	LIMIT 10;
+
+c. Least selling 10 petrol districts
+	SELECT district_id, vol_out
+	FROM petrol 
+	ORDER BY vol_out
+	LIMIT 10;
+
+d. Get all distributors where the difference between volume in and volume out is >500 (along with year and difference amount)
+	SELECT distributer_name, year, (vol_in - vol_out) diff
+	FROM  petrol 
+	WHERE (vol_in - vol_out) > 500
+	ORDER BY diff DESC;
+	
+	
+Usecase - OLYMPICS
+------------------
+
+1. Create Table
+
+create table olympic (athelete STRING, age INT, country STRING, year STRING, closing STRING, sport STRING, gold INT, silver INT, bronze INT, total INT) 
+row format delimited 
+fields terminated by '\t' 
+stored as textfile;
+
+2. Load Data
+
+load data local inpath '/home/cloudera/Downloads/olympic_data.csv' into table olympic;
+
+3. Queries
+
+a. List total number of medals won by each country in 'swimming'
+	SELECT country, SUM(total)
+	FROM olympic
+	WHERE sport = "Swimming" 
+	GROUP BY country
+	ORDER BY 2 DESC;
+
+b. No. of medals won by India per year
+	SELECT year, SUM(total)
+	FROM olympic
+	WHERE country = "India"
+	GROUP BY year
+	ORDER BY 2 DESC;
+
+c. List total number of medals won by each country
+	SELECT country, SUM(total)
+	FROM olympic
+	GROUP BY country
+	ORDER BY 2 DESC;
+	
+d. List total number of gold medals won by each country
+	SELECT country, SUM(gold)
+	FROM olympic
+	GROUP BY country
+	ORDER BY 2 DESC;
+
+e. List countries with medals in 'shooting' per year
+	SELECT country, year, total 
+	FROM olympic
+	WHERE sport = "Shooting"
+	ORDER BY 2, 3 DESC;
+	
+
+BONUS
+------
+
+ALTER TABLE petrol
+ADD PARTITION (distributer_name='reliance')
+location '/distributor/reliance';
+
+
