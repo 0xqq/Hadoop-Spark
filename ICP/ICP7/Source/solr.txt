@@ -1,0 +1,76 @@
+solrctl config --create logs_config predefinedTemplate -p immutable=false
+
+solrctl instancedir --generate  $HOME/logs_config
+
+solrctl collection --create logs2 -c logs_config
+
+Books:
+
+Query 1 - 
+_version_:[0 TO 1604819396261314560]
+
+Query 2 -
+-inStock:false
+
+Query 3 -
+author:George R.R. Martin AND genre_s:fantasy
+sequence_i asc
+name, sequence_i
+
+Query 4 - 
+series_t:The Chronicles*
+series_t, name
+
+Query 5 -
+price:{5.99 TO * }
+name, author, price
+
+
+solrctl instancedir --generate  /tmp/films
+
+solrctl instancedir --create films /tmp/films
+
+solrctl collection --create films
+
+Films:
+
+Query1:
+genre:*Action Film*
+name, genre
+
+Query 2: 
+directed_by:Gary*
+name, directed_by
+
+Query 3: 
+_version_: [0 TO 1604823685318836225]
+name, _version_
+
+Query 4:
+genre:*Indie film* AND genre:*Documentary*
+name, genre
+
+Query 5:
+id:*2001
+name, id
+
+
+
+Bonus:
+
+Partial Match:
+directed_by:John*
+name, directed_by
+
+Fuzzy:
+Behind~2
+name
+
+Proximity:
+"(name)" ~Be
+name, directed_by
+ 
+
+
+
+
