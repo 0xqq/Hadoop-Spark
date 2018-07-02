@@ -1,0 +1,11 @@
+restaurant_id,restaurant_name,country_code,city,locality,cuisines,avg_cost,currency,online,rating_value,rating_text,votes
+17534788,The Artesian Restaurant,216,Ojo Caliente,Ojo Caliente,American	International	Southwestern,40,Dollar($),No,3.6,Good,30
+17061237,Ceví_che Tapas Bar & Restaurant,216,Orlando,Church Street District,Spanish	Tapas,40,Dollar($),No,4.4,Very Good,981
+8320,Shiv Restaurant,1,Faridabad,Sector 17,North Indian,400,Indian Rupees(Rs.),No,2.7,Average,20
+18353030,Oh My!,1,Faridabad,Sector 30,Chinese	Fast Food",300,Indian Rupees(Rs.),No,0,Not rated,2
+300100,PizzaVito,1,Gurgaon,Central Plaza Mall,Italian	Pizza	Lebanese",900,Indian Rupees(Rs.),Yes,3.3,Average,218
+309252,Fatburger,1,Gurgaon,Cyber Hub,American	Mexican,1000,Indian Rupees(Rs.),Yes,3.3,Average,793
+18232093,Happy Hakka,1,Gurgaon,DLF Phase 4,Chinese	Asian	Thai,650,Indian Rupees(Rs.),Yes,4.1,Very Good,134
+18224282,Three Guys,1,Guwahati,Zoo Tiniali,Continental	North Indian	Chinese	Arabian	Thai,700,Indian Rupees(Rs.),No,4.3,Very Good,233
+18337782,Sartaj Food Corner,1,New Delhi,Alaknanda,North Indian	South Indian	Chinese,500,Indian Rupees(Rs.),Yes,2.8,Average,7
+18430692,Singh's Zaika ,1,New Delhi,Ashok Vihar Phase 1,North Indian	Chinese	Mughlai,500,Indian Rupees(Rs.),No,3,Average,4

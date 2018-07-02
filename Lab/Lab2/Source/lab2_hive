@@ -1,0 +1,67 @@
+--Zomato Use case
+
+--Set property to show header
+set hive.cli.print.header=true;
+
+
+--Create table
+
+create table zomato (restaurant_id STRING,restaurant_name STRING,country_code STRING,city STRING,locality STRING,cuisines ARRAY<STRING>,avg_cost STRING,currency STRING,online STRING,rating_value STRING,rating_text STRING,votes STRING) row format delimited fields terminated by ',' collection items terminated by '\t' stored as textfile tblproperties ("skip.header.line.count"="1");
+
+
+--Load data
+load data local inpath '/home/cloudera/Downloads/zomatohive.txt' into table zomato;
+
+--Describe table (cuisine is complex datatype)
+describe zomato;
+
+--Query 1
+--Built-in function concat
+select restaurant_name, rating_text, concat(avg_cost, " " , currency) cost from zomato LIMIT 5;
+
+
+--Query 2
+--Built-in function count
+select rating_text, count(rating_text) cnt from zomato group by rating_text;
+
+
+--Query 3
+--Pattern Matching 
+select restaurant_name, currency from zomato where currency LIKE 'Indian%' LIMIT 5;
+
+
+--Query 4
+--Top n from every group: sub query
+select restaurant_name, city from (select restaurant_name, city, votes from zomato where rating_text = 'Average'  ORDER BY votes DESC LIMIT 2 UNION ALL select restaurant_name, city, votes from zomato where rating_text = 'Very Good' ORDER BY votes DESC LIMIT 2) AS t;
+
+
+--Query 5
+--Built-in functions for Complex data types
+select restaurant_name, size(cuisines) AS no_cuisines, cuisines from zomato LIMIT 5; 
+
+
+--Query 6
+--complex data type condition
+select restaurant_name from zomato where array_contains(cuisines, "Chinese") LIMIT 5;
+
+
+--Query 7
+--Word count
+select word, count(1) as cnt from (select explode(cuisines) as word from zomato) w group by word order by cnt desc;
+
+
+--Query 8
+--Case
+select restaurant_name, CASE WHEN votes BETWEEN 0 AND 30 THEN 'Low' WHEN votes BETWEEN 31 AND 100 THEN 'Medium' WHEN votes BETWEEN 101 AND 300 THEN 'High' ELSE 'Very High' END AS no_votes, rating_value from zomato LIMIT 10;
+
+
+--Query 9
+--Average rating
+select country_code, avg(rating_value) AS avg_rating from zomato where country_code = 1 GROUP BY country_code;
+
+
+--Query 10
+--Avg length of Restaurant Names in India (Nested built in functions)
+select avg(length(restaurant_name)) avg_name_length from zomato where country_code = 1;
+
+

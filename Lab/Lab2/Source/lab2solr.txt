@@ -1,0 +1,54 @@
+solrctl instancedir --generate /tmp/restaurants
+
+ls /tmp/restaurants/conf
+
+gedit /tmp/restaurants/conf/schema.xml
+
+solrctl instancedir --create restaurants /tmp/restaurants
+
+solrctl collection --create restaurants
+
+
+Query1:
+cuisines:*Chinese*
+restaurant_name
+
+Query2:
+currency:*Indian* AND avg_cost:[300 TO 400]
+avg_cost asc
+restaurant_name, avg_cost, currency
+
+Query3:
+votes: [* TO 0]
+votes desc
+restaurant_name, city
+
+Query4:
+restaurant_name:*Dhaba
+restaurant_name, city
+
+Query5:
+rating_text:Excellent AND cuisines:*Desserts*
+rating_value desc
+restaurant_name, city, cuisines
+
+Query6:
+cuisines:*Desserts* AND _query_:"cuisines:*French*"
+restaurant_name, city, cuisines
+
+Query7:
+rating_text:Excellent AND _query_:"votes: [100 TO *]"
+restaurant_name, city, votes
+
+Query8:
+avg_cost:400 AND _query_:"currency:*Indian*"
+restaurant_name, avg_cost, currency
+
+Query9:
+city:"New Delhi" AND _query_:"cuisines:*Indian* AND rating_text:Good"
+restaurant_name, rating_value
+
+Query10:
+city:"Des Moines" AND _query_:"rating_text:Excellent"
+restaurant_name, cuisines
+
